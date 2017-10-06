@@ -65,13 +65,15 @@ var loader;
  * Invoked when document initialized.
  */
 $(document).ready(function() {
-	
+		
 	// delete window.crypto for testing
 	if (DELETE_WINDOW_CRYPTO) delete window.crypto;
 	
 	// start loading common dependencies
 	loader = new DependencyLoader();
 	loader.load(COMMON_DEPENDENCIES, function() {
+		
+		debug();
 		
 		// get data url of logo
 //		let plugin = CryptoUtils.getCryptoPlugin("BCH");
