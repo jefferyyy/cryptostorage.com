@@ -5,7 +5,8 @@ function debug() {
 	
 	let funcs = [];
 	for (let i = 0; i < REPEAT; i++) {
-		funcs.push(getNonLeakFunc());
+		funcs.push(getLeakFunc());
+		//funcs.push(getNonLeakFunc());
 	}
 	console.log("Executing");
 	async.series(funcs, function(err, result) {
