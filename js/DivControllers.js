@@ -981,7 +981,8 @@ function ExportController(div, window, pieces, pieceDivs) {
 	
 	function printAll() {
 		if (!printEnabled) return;
-		window.print();
+		let window = newWindow(currentPiece, "Print Test", null, null, getInternalStyleSheetText());
+		//window.print();
 	}
 	
 	function setPrintEnabled(bool) {
