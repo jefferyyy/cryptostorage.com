@@ -109,8 +109,11 @@ $(document).ready(function() {
 	}
 	
 	// render application to html body
+	$("body").hide();
 	var appController = new AppController($("body"));
-	appController.render();
+	appController.render(function() {
+		$("body").show();
+	});
 	
 	// preload donation page
 	loader.load("lib/qrcode.js", function() {

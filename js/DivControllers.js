@@ -132,40 +132,48 @@ function SliderController(div, onSelectGenerate, onSelectRecover) {
 		// intro slider
 		let sliderContainerDiv = $("<div class='slider_container'>").appendTo(div);
 		let sliderDiv = $("<div class='single-item'>").appendTo(sliderContainerDiv);
-		getSlide($("<img src='img/mix.png'>"), "Generate secure storage for multiple cryptocurrencies.").appendTo(sliderDiv);
-		getSlide($("<img src='img/security.png'>"), "Keys are generated in your browser so funds are never entrusted to a third party.").appendTo(sliderDiv);
-		getSlide($("<img src='img/printer.png'>"), "Export to digital and printable formats for safe storage and easy recovery.").appendTo(sliderDiv);
-		getSlide($("<img src='img/search_file.png'>"), "100% open source and free to use.  No account necessary.").appendTo(sliderDiv);
-		getSlide($("<img src='img/password_protected.png'>"), "Private keys can be password protected and split into pieces.").appendTo(sliderDiv);
-		sliderDiv.slick({autoplay:true, arrows:false, dots:true, autoplaySpeed:3000});
 		
-		function getSlide(img, text) {
-			let slide = $("<div class='slide'>");
-			let slideContent = $("<div class='slide_content'>").appendTo(slide);
-			if (img) {
-				let imgDiv = $("<div>").appendTo(slideContent);
-				img.appendTo(imgDiv);
-				img.attr("class", "slide_img");
+		// load mix logo
+		let mix = $("<img src='img/mix.png'>");
+		mix.on('load', function() {
+			
+			// create slider slides
+			getSlide($("<img src='img/mix.png'>"), "Generate secure storage for multiple cryptocurrencies.").appendTo(sliderDiv);
+			getSlide($("<img src='img/security.png'>"), "Keys are generated in your browser so funds are never entrusted to a third party.").appendTo(sliderDiv);
+			getSlide($("<img src='img/printer.png'>"), "Export to digital and printable formats for safe storage and easy recovery.").appendTo(sliderDiv);
+			getSlide($("<img src='img/search_file.png'>"), "100% open source and free to use.  No account necessary.").appendTo(sliderDiv);
+			getSlide($("<img src='img/password_protected.png'>"), "Private keys can be password protected and split into pieces.").appendTo(sliderDiv);
+			sliderDiv.slick({autoplay:true, arrows:false, dots:true, autoplaySpeed:3000});
+			
+			// call to action is overlaid
+			let ctaDiv = $("<div class='cta_div'>").appendTo(div);
+			
+			// button to generate keys
+			let btnGenerate = $("<div class='btn btn_start_generate'>").appendTo(ctaDiv);
+			btnGenerate.append("Generate New Keys");
+			btnGenerate.click(function() { onSelectGenerate(); });
+			
+			// button to recover keys
+			let btnRecover = $("<div class='btn btn_recover'>").appendTo(ctaDiv);
+			btnRecover.append("or Recover Existing Keys");
+			btnRecover.click(function() { onSelectRecover(); });
+			
+			// done
+			if (onDone) onDone(div);
+			
+			function getSlide(img, text) {
+				let slide = $("<div class='slide'>");
+				let slideContent = $("<div class='slide_content'>").appendTo(slide);
+				if (img) {
+					let imgDiv = $("<div>").appendTo(slideContent);
+					img.appendTo(imgDiv);
+					img.attr("class", "slide_img");
+				}
+				let labelDiv = $("<div class='slide_label'>").appendTo(slideContent);
+				labelDiv.html(text);
+				return slide;
 			}
-			let labelDiv = $("<div class='slide_label'>").appendTo(slideContent);
-			labelDiv.html(text);
-			return slide;
-		}
-		
-		// call to action is overlaid
-		let ctaDiv = $("<div class='cta_div'>").appendTo(div);
-		
-		// button to generate keys
-		let btnGenerate = $("<div class='btn btn_start_generate'>").appendTo(ctaDiv);
-		btnGenerate.append("Generate New Keys");
-		btnGenerate.click(function() { onSelectGenerate(); });
-		
-		// button to recover keys
-		let btnRecover = $("<div class='btn btn_recover'>").appendTo(ctaDiv);
-		btnRecover.append("or Recover Existing Keys");
-		btnRecover.click(function() { onSelectRecover(); });
-		
-		if (onDone) onDone(div);
+		});
 	}
 }
 inheritsFrom(SliderController, DivController);
