@@ -82,11 +82,11 @@ let CryptoUtils = {
 				callback(null, key);
 				break;
 			case CryptoUtils.EncryptionScheme.BIP38:
+				let Bip38 = require('bip38');
 				let bip38 = new Bip38();
 				let result = bip38.encrypt(key.getWif(), password, key.getAddress());
 				key.setState(Object.assign(key.getPlugin().newKey(result).getState(), {address: key.getAddress()}));
 				callback(null, key);
-				
 //				console.log(result);
 //				ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(key.getHex(), password, true, function(resp) {
 //					if (resp.message) callback(resp);	// TODO: confirm error handling, isError()
