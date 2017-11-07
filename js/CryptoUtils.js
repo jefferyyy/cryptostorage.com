@@ -82,13 +82,19 @@ let CryptoUtils = {
 				callback(null, key);
 				break;
 			case CryptoUtils.EncryptionScheme.BIP38:
-				ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(key.getHex(), password, true, function(resp) {
-					if (resp.message) callback(resp);	// TODO: confirm error handling, isError()
-					else {
-						key.setState(Object.assign(key.getPlugin().newKey(resp).getState(), {address: key.getAddress()}));
-						callback(null, key);
-					}
-				});
+				let bip38 = new Bip38();
+				let result = bip38.encrypt(key.getWif(), password, key.getAddress());
+				key.setState(Object.assign(key.getPlugin().newKey(result).getState(), {address: key.getAddress()}));
+				callback(null, key);
+				
+//				console.log(result);
+//				ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(key.getHex(), password, true, function(resp) {
+//					if (resp.message) callback(resp);	// TODO: confirm error handling, isError()
+//					else {
+//						key.setState(Object.assign(key.getPlugin().newKey(resp).getState(), {address: key.getAddress()}));
+//						callback(null, key);
+//					}
+//				});
 				break;
 			default:
 				callback(new Error("Encryption scheme '" + scheme + "' not supported"));
@@ -699,7 +705,7 @@ let CryptoUtils = {
 							
 							// decrypt keys
 							onProgress(progressWeight, totalWeight, "Verifying encryption");
-							async.series(funcs, function(err, decryptedKeys) {
+							async.parallelLimit(funcs, 3, function(err, decryptedKeys) {
 								if (decommissioned) {
 									if (onDone) onDone();
 									return;
